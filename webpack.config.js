@@ -1,13 +1,14 @@
 const webpack = require('webpack') // eslint-disable-line
 
 module.exports = {
+  entry: './src/script.js',
   output: {
-    filename: 'index.js'
+    filename: 'script.js'
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.js$/i,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -15,6 +16,14 @@ module.exports = {
             presets: ['@babel/preset-env']
           }
         }
+      },
+      {
+        test: /\.(png|jpg|jpeg|gif)$/i,
+        use: [
+          {
+            loader: 'url-loader'
+          }
+        ]
       }
     ]
   }
