@@ -1,5 +1,3 @@
-include mixin
-
 -
   var vars = jsyaml.load(fs.readFileSync(path.resolve('./src/variables.yml')))
   var css = dev ? './temp/dev/main.css' : './temp/dist/main.css'
@@ -26,8 +24,9 @@ html(lang='ja')
         content!=vars.description
       )
 
-    style
-      = style
+    block style
+      style
+        != style
 
   body
     block content
@@ -35,4 +34,4 @@ html(lang='ja')
 
     block script
       script
-        = script
+        != script
