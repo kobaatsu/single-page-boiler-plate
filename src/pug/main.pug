@@ -24,8 +24,9 @@ html(lang='ja')
         content!=vars.description
       )
 
-    style
-      != style
+    block style
+      style
+        != style
 
   body
     block content
