@@ -10,7 +10,7 @@ const rename = require('gulp-rename')
 const stylus = require('gulp-stylus')
 const postcss = require('gulp-postcss')
 const autoprefixer = require('autoprefixer')
-const mqpacker = require('css-mqpacker')
+const sortMediaQueries = require('postcss-sort-media-queries')
 const nano = require('cssnano')
 const sorting = require('postcss-sorting')
 const prettify = require('postcss-prettify')
@@ -23,9 +23,9 @@ const fs = require('fs')
 const path = require('path')
 const jsyaml = require('js-yaml')
 
-var htmlBase64 = require('gulp-inline-image-html')
-var faviconBase64 = require('gulp-base64-favicon')
-var cssBase64 = require('gulp-css-base64')
+const htmlBase64 = require('gulp-inline-image-html')
+const faviconBase64 = require('gulp-base64-favicon')
+const cssBase64 = require('gulp-css-base64')
 
 const SRC_ROOT = 'src'
 const DEV = 'dev'
@@ -34,7 +34,7 @@ const TEMP = 'temp'
 
 const SRC = {
   pug: [`${SRC_ROOT}/pug/main.pug`],
-  stylus: [`${SRC_ROOT}/stylus/main.styl`]
+  stylus: [`${SRC_ROOT}/stylus/main.styl`],
 }
 
 const WATCH = [`${SRC_ROOT}/**/*.*`]
@@ -45,9 +45,9 @@ const BrowserSync = (base, port, directory) => {
   const opts = {
     server: {
       baseDir: base,
-      directory: true
+      directory: true,
     },
-    port
+    port,
   }
   return bs.init(opts)
 }
@@ -61,8 +61,8 @@ const CompilePug = (src, dist, prod) => {
       plumber({
         errorHandler: notify.onError({
           title: 'PUG Error: Line <%= error.line %>',
-          message: '<%= error.message %>'
-        })
+          message: '<%= error.message %>',
+        }),
       })
     )
     .pipe(
@@ -72,12 +72,12 @@ const CompilePug = (src, dist, prod) => {
           dev: !prod,
           fs,
           path,
-          jsyaml
-        }
+          jsyaml,
+        },
       })
     )
     .pipe(
-      rename(path => {
+      rename((path) => {
         path.basename = 'index'
         path.extname = '.html'
       })
@@ -96,12 +96,12 @@ exports.htmlDist = htmlDist
 const CompileStylus = (src, dist, prod) => {
   const opts = []
   let sourcemapOpts = false
-  opts.push(mqpacker({ sort: true }))
+  opts.push(sortMediaQueries())
   opts.push(sorting())
   opts.push(autoprefixer())
   opts.push(
     nano({
-      preset: ['default', { discardComments: true }]
+      preset: ['default', { discardComments: true }],
     })
   )
   if (!prod) {
@@ -115,8 +115,8 @@ const CompileStylus = (src, dist, prod) => {
       plumber({
         errorHandler: notify.onError({
           title: 'STYLUS Error: Line <%= error.line %>',
-          message: '<%= error.message %>'
-        })
+          message: '<%= error.message %>',
+        }),
       })
     )
     .pipe(stylus({ 'include css': true }))
@@ -161,7 +161,7 @@ exports.dev = dev
 const dist = gulp.series(jsDist, cssDist, htmlDist)
 exports.dist = dist
 
-const watch = cb => {
+const watch = (cb) => {
   gulp.watch(WATCH, dev)
   cb()
 }
