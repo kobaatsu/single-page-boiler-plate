@@ -53,7 +53,7 @@
     "gulp-util": "^3.0.8",
     "js-yaml": "^4.0.0",
     "open": "^7.3.0",
-    "postcss": "^8.2.2",
+    "postcss": "^8.2.10",
     "postcss-prettify": "^0.3.4",
     "postcss-sort-media-queries": "^3.0.0",
     "postcss-sorting": "^6.0.0",
